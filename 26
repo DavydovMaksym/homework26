@@ -1,0 +1,68 @@
+#include <iostream>
+#include <cstring>
+
+class String
+{
+    char* data;
+public:
+    String() : data(nullptr) {}
+
+    String(const char* str)
+    {
+        if (str)
+        {
+            data = new char[std::strlen(str) + 1];
+            std::strcpy(data, str);
+        }
+        else
+        {
+            data = nullptr;
+        }
+    }
+
+    String(const String& other)
+    {
+        if (other.data)
+        {
+            data = new char[std::strlen(other.data) + 1];
+            std::strcpy(data, other.data);
+        }
+        else
+        {
+            data = nullptr;
+        }
+    }
+
+    String(String&& other)
+    {
+        data = other.data;
+        other.data = nullptr;
+    }
+
+    ~String()
+    {
+        delete[] data;
+    }
+
+    void print() const
+    {
+        if (data)
+            std::cout << data << std::endl;
+        else
+            std::cout << "(empty row)" << std::endl;
+    }
+};
+
+int main()
+{
+    String s1("Hello");
+    String s2 = std::move(s1);
+
+    std::cout << "s1: ";
+    s1.print();
+
+    std::cout << "s2: ";
+    s2.print();
+
+    return 0;
+}
